@@ -10,13 +10,34 @@
 			</Pattern>
 		</layout>
 	</appender>
+	
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/spring-cloud-sleuth.log</file>
 
-	<logger name="org.springframework.cloud.sleuth.instrument.messaging" level="DEBUG" additivity="false">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread,%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %logger{35} - %msg%n
+			</Pattern>
+			<!-- %d{yyyy-MM-dd HH:mm:ss} %mdc [%thread] %level %logger{35} - %msg%n -->
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/spring-cloud-sleuth-%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>40</maxHistory>
+		</rollingPolicy>
+
+	</appender>	
+
+	<logger name="org.springframework.cloud.sleuth" level="DEBUG" additivity="false">
 		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
 	</logger>
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
 	</root>
 
 </configuration>

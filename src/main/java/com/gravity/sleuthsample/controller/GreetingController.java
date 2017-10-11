@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cloud.sleuth.Span;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -21,6 +22,12 @@ import com.gravity.sleuthsample.websocket.client.HelloClient;
 public class GreetingController {
 
     private static Log logger = LogFactory.getLog(GreetingController.class);
+    
+    @ResponseBody
+    @RequestMapping(path="/trace", method=RequestMethod.GET)
+    public String traceTest() {
+        return "trace!";
+    }
     
     @ResponseBody
     @RequestMapping(path="/send", method=RequestMethod.GET)
