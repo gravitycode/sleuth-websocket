@@ -21,25 +21,6 @@ import com.gravity.sleuthsample.websocket.client.HelloClient;
 public class GreetingController {
 
     private static Log logger = LogFactory.getLog(GreetingController.class);
-    
-    @ResponseBody
-    @RequestMapping(path="/send", method=RequestMethod.GET)
-    public String launch() throws InterruptedException, ExecutionException {
-        HelloClient helloClient = new HelloClient();
-
-        ListenableFuture<StompSession> f = helloClient.connect();
-        StompSession stompSession = f.get();
-
-        logger.info("Subscribing to greeting topic using session " + stompSession);
-        helloClient.subscribeGreetings(stompSession);
-
-        logger.info("Sending hello message" + stompSession);
-        helloClient.sendHello(stompSession);
-        
-        return "message sent!";
-    }
-    
-    
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public Greeting greeting(HelloMessage message) throws Exception {
